@@ -15,7 +15,7 @@ Or, do manual install:
 
 Currently only static templates are supported. Remember to place your marko templates inside the `assets` directory.
 
-You can specify local variables inside the `plugins` section inside your brunch config file like so:
+You can specify local variables inside the `plugins` section of your brunch config file like so:
 
 ```js
 plugins: {
