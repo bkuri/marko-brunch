@@ -11,7 +11,7 @@ Install the plugin via npm with `npm install --save marko-brunch`.
 Or, do manual install:
 
 -	Add `"marko-brunch": "~x.y.z"` to `package.json` of your brunch app.
--	If you want to use git version of plugin, use the GitHub URI`"marko-brunch": "brunch/marko-brunch"`.
+-	If you want to use git version of plugin, use the GitHub URI`"marko-brunch": "bkuri/marko-brunch"`.
 
 Currently only static templates are supported. Remember to place your marko templates inside the `assets` directory.
 
@@ -24,6 +24,17 @@ plugins: {
       key1: 'value1',
       key2: 'value2'
     }
+  }
+}
+```
+
+You can also specify prettified html output by setting `pretty` to `true` (default is `false`). Indentation size can be specified by setting `indent_size` (default is `2`\):
+
+```js
+plugins: {
+  marko: {
+    pretty: true,
+    indent_size: 2
   }
 }
 ```

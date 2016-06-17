@@ -16,7 +16,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "html": "0.0.10",
     "marko": "^3.4.8"
   },
-  "version": "0.0.2"
+  "version": "0.0.3"
 }

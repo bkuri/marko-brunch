@@ -2,6 +2,7 @@
 
 
 {load} = require('marko')
+{prettyPrint} = require('html')
 
 
 class Markompiler
@@ -12,7 +13,8 @@ class Markompiler
   type: 'template'
 
   constructor: (@config) ->
-    @config = @config?.plugins?.marko or data: {}
+    defaults = data: {}, indent_size: 2, pretty: no
+    @config = Object.assign(defaults, @config?.plugins?.marko or {})
     require('marko/compiler').defaultOptions.writeToDisk = no
 
   compileStatic: (params) ->
@@ -20,7 +22,11 @@ class Markompiler
 
     new Promise (resolve, reject) =>
       try
-        resolve load(path, data).renderSync(@config.data)
+        {indent_size, pretty} = @config
+
+        output = load(path, data).renderSync(@config.data)
+        output = prettyPrint(output, @config.indent_size) if pretty and (indent_size > 0)
+        resolve output
 
       catch error
         reject error
