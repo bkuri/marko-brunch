@@ -1,10 +1,8 @@
 'use strict'
 
-
 {load} = require('marko')
 {prettyPrint} = require('html')
 reload = require('marko/hot-reload')
-
 
 class Markompiler
   brunchPlugin: yes
@@ -14,14 +12,12 @@ class Markompiler
   staticTargetExtension: 'html'
   type: 'template'
 
-
   constructor: (@config) ->
     defaults = data: {}, indent_size: 2, pretty: no
     @config = Object.assign(defaults, @config?.plugins?.marko or {})
 
     reload.enable()
     return
-
 
   compileStatic: (params) ->
     {data, path} = params
@@ -32,16 +28,17 @@ class Markompiler
         output = load(path, data).renderSync(@config.data)
 
         if pretty and (indent_size > 0)
-          output = prettyPrint(output, @config.indent_size)
+          output = prettyPrint(output, indent_size)
 
-        reload.handleFileModified path
         resolve output
 
       catch error
         reject error
 
-      return
+      finally
+        reload.handleFileModified path
 
+      return
 
 module.exports = Markompiler
 require('marko/compiler').defaultOptions.writeToDisk = no
