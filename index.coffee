@@ -19,28 +19,29 @@ class Markompiler
     defaults = data: {}, indent_size: 2, pretty: no
     @config = Object.assign(defaults, @config?.plugins?.marko or {})
 
+    reload.enable()
+    return
+
 
   compileStatic: (params) ->
     {data, path} = params
     {indent_size, pretty} = @config
 
-    new Promise (resolve, reject) =>
+    return new Promise (resolve, reject) =>
       try
         output = load(path, data).renderSync(@config.data)
-        output = prettyPrint(output, @config.indent_size) if pretty and (indent_size > 0)
-        @path = path
 
+        if pretty and (indent_size > 0)
+          output = prettyPrint(output, @config.indent_size)
+
+        reload.handleFileModified path
         resolve output
 
       catch error
         reject error
 
-
-  onCompile: =>
-    reload.handleFileModified @path
-    @path = ''
+      return
 
 
 module.exports = Markompiler
 require('marko/compiler').defaultOptions.writeToDisk = no
-reload.enable()
