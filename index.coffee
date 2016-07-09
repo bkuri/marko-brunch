@@ -30,11 +30,13 @@ class Markompiler
         if pretty and (indent_size > 0)
           output = prettyPrint(output, indent_size)
 
-        reload.handleFileModified path
         resolve output
 
       catch error
         reject error
+
+      finally
+        reload.handleFileModified path
 
       return
 
