@@ -16,7 +16,7 @@ class Markompiler
     defaults = data: {}, indent_size: 2, pretty: no
     @config = Object.assign(defaults, @config?.plugins?.marko or {})
 
-    reload.enable()
+    reload.enable() if process.env.BRUNCH_WATCHING
     return
 
   compileStatic: (params) ->
@@ -36,7 +36,7 @@ class Markompiler
         reject error
 
       finally
-        reload.handleFileModified path
+        reload.handleFileModified(path) if process.env.BRUNCH_WATCHING
 
       return
 
