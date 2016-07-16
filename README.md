@@ -28,13 +28,12 @@ plugins: {
 }
 ```
 
-You can also specify prettified html output by setting `pretty` to `true` (default is `false`). Indentation size can be specified by setting `indent_size` (default is `2`\):
+You can specify indented html output by setting `indent` to a value larger than `0`. The default value for `indent` is `0` when in production mode and `0` otherwise.
 
 ```js
 plugins: {
   marko: {
-    pretty: true,
-    indent_size: 2
+    indent: 2
   }
 }
 ```
