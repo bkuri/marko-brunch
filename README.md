@@ -39,13 +39,7 @@ plugins: {
 }
 ```
 
-Starting in v1.0.3, Marko's `hot-reload` module will only be activated if `process.env.BRUNCH_WATCHING` is set to `true` prior to executing brunch in watch mode:
-
-```sh
-$ export BRUNCH_WATCHING=true; brunch watch --server
-```
-
-I realize that this isn't the fanciest solution, so if you have a better idea please chime in.
+Note: Starting in v1.0.4, Marko's `hot-reload` module will only be activated if `brunch.persistent` is set to `true`.
 
 License
 -------

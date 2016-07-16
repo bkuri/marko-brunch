@@ -12,11 +12,11 @@ class Markompiler
   staticTargetExtension: 'html'
   type: 'template'
 
-  constructor: (@config) ->
-    defaults = data: {}, indent_size: 2, pretty: no
-    @config = Object.assign(defaults, @config?.plugins?.marko or {})
+  constructor: (cfg) ->
+    defaults = data: {}, indent_size: 2, pretty: no, watching: cfg.persistent
+    @config = Object.assign(defaults, cfg?.plugins?.marko or {})
 
-    reload.enable() if process.env.BRUNCH_WATCHING
+    reload.enable() if @config.watching
     return
 
   compileStatic: (params) ->
@@ -36,7 +36,7 @@ class Markompiler
         reject error
 
       finally
-        reload.handleFileModified(path) if process.env.BRUNCH_WATCHING
+        reload.handleFileModified(path) if @config.watching
 
       return
 
