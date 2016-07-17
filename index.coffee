@@ -2,7 +2,6 @@
 
 {load} = require('marko')
 {prettyPrint} = require('html')
-reload = require('marko/hot-reload')
 
 class Markompiler
   brunchPlugin: yes
@@ -18,10 +17,9 @@ class Markompiler
     return new Promise (resolve, reject) =>
       try
         {production} = @brunch_config.overrides
-        deploy = ('production' in @brunch_config.env)
         output = load(path, data).renderSync(@config.data)
 
-        indent = if deploy and production.optimize
+        indent = if (@deploy and production.optimize)
           production.plugins?.marko?.indent or 0
         else @config.indent
 
@@ -32,15 +30,19 @@ class Markompiler
         reject error
 
       finally
-        reload.handleFileModified(path) if @brunch_config.persistent
+        @reload.handleFileModified(path) if @brunch_config.persistent
 
       return
 
   constructor: (@brunch_config) ->
-    defaults = data: {}, indent: if @brunch_config.isProduction then 0 else 2
+    @deploy = ('production' in @brunch_config.env)
+    defaults = data: {}, indent: if @deploy then 0 else 2
     @config = Object.assign(defaults, @brunch_config.plugins?.marko or {})
 
-    reload.enable() if @brunch_config.persistent
+    if @brunch_config.persistent
+      @reload = require('marko/hot-reload')
+      @reload.enable()
+
     return
 
 
