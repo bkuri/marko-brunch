@@ -28,7 +28,7 @@ plugins: {
 }
 ```
 
-You can specify indented html output by setting `indent` to a value larger than `0`. The default value for `indent` is `0` when in production mode and `0` otherwise.
+You can specify indented html output by setting `indent` to a value larger than `0`. The default value for `indent` is `0` when in production mode and `2` otherwise.
 
 ```js
 plugins: {
