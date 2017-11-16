@@ -1,7 +1,7 @@
 'use strict'
 
-{load} = require('marko')
-{prettyPrint} = require('html')
+{ load } = require('marko')
+{ prettyPrint } = require('html')
 
 class Markompiler
   brunchPlugin: yes
@@ -12,19 +12,21 @@ class Markompiler
   type: 'template'
 
   compileStatic: (params) ->
-    {data, path} = params
+    { data, path } = params
 
     return new Promise (resolve, reject) =>
       try
-        {production} = @brunch_config.overrides
+        { production } = @brunch_config.overrides
         output = load(path, data).renderSync(@config.data)
 
-        indent = if (@deploy and production.optimize)
-          production.plugins?.marko?.indent or 0
-        else @config.indent
+        indent_size = switch
+          when (@deploy and production.optimize)
+            production.plugins?.marko?.indent or 0
+          else @config.indent
 
-        resolve if (indent > 0) then prettyPrint(output, indent_size: indent)
-        else output
+        resolve switch
+          when (indent_size > 0) then prettyPrint(output, { indent_size })
+          else output
 
       catch error
         reject error
@@ -38,11 +40,10 @@ class Markompiler
     @deploy = ('production' in @brunch_config.env)
     defaults = data: {}, indent: if @deploy then 0 else 2
     @config = Object.assign(defaults, @brunch_config.plugins?.marko or {})
+    return unless @brunch_config.persistent
 
-    if @brunch_config.persistent
-      @reload = require('marko/hot-reload')
-      @reload.enable()
-
+    @reload = require('marko/hot-reload')
+    @reload.enable()
     return
 
 
